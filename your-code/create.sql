@@ -1,78 +1,43 @@
-DROP DATABASE IF EXISTS cars;
-CREATE DATABASE cars; 
-USE cars;
+USE lab_mysql;
 
--- -----------------------------------------------------
--- Table `cars`.`cars`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cars`.`cars` (
-  `car_id` INT NOT NULL,
-  `manufacturer` VARCHAR(20) NOT NULL,
-  `model` VARCHAR(20) NOT NULL,
-  `year_` INT NOT NULL,
-  `color` VARCHAR(20) NOT NULL,
-  PRIMARY KEY (`car_id`));
+create table cars(
+	car_id int auto_increment primary key,
+    vin varchar(17) not null ,
+    manufacturer varchar(25),
+    model varchar(25),
+    `year` int,
+    color varchar(25)
+);
 
-
--- -----------------------------------------------------
--- Table `cars`.`costumer`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cars`.`costumer` (
-  `costumer_id` INT NOT NULL,
-  `first_name` VARCHAR(20) NOT NULL,
-  `last_name` VARCHAR(20),
-  `phone_no` VARCHAR(20) NULL DEFAULT NULL,
-  `email` VARCHAR(20) NULL DEFAULT NULL,
-  `address` VARCHAR(40) NULL DEFAULT NULL,
-  `city` VARCHAR(20) NULL DEFAULT NULL,
-  `state` VARCHAR(20) NULL DEFAULT NULL,
-  `country` VARCHAR(20) NULL DEFAULT NULL,
-  `zip_code` VARCHAR(20) NULL DEFAULT NULL,
-  `client` INT NULL DEFAULT NULL,
-  PRIMARY KEY (`costumer_id`));
+create table customers(
+	client_id int auto_increment primary key,
+    c_id varchar(15) not null,
+    c_name varchar(25) not null,
+    c_phone varchar(15) not null,
+    c_email varchar(25) default "-",
+    c_address varchar(25) ,
+    c_city varchar(25),
+    c_state varchar(25),
+    c_country varchar(25),
+    c_postal varchar(12)
+);
 
 
-  
-  -- -----------------------------------------------------
--- Table `cars`.`salesperson`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cars`.`salesperson` (
-  `salesperson_id` INT NOT NULL,
-  `first_name` VARCHAR(40) NOT NULL,
-  `store_name` VARCHAR(3) NOT NULL,
-  PRIMARY KEY (`salesperson_id`));
+create table salespersons(
+	s_staff_id int auto_increment primary key,
+    staff_id varchar(15) not null,
+    s_name varchar(25) not null,
+    store varchar(25) not null
+);
 
-- -----------------------------------------------------
--- Table `cars`.`invoices`
--- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `cars`.`invoices` (
-  `invoice_id` INT NOT NULL,
-  `date_` DATE NULL DEFAULT NULL,
-  `car` VARCHAR(20) NOT NULL,
-  `costumer` VARCHAR(20) NULL DEFAULT NULL,
-  `salesperson` VARCHAR(20) NULL DEFAULT NULL,
-  `salesperson_salesperson_id` INT NOT NULL,
-  `cars_car_id` INT NOT NULL,
-  `costumer_costumer_id` INT NOT NULL,
-  PRIMARY KEY (`invoice_id`),
-  INDEX `fk_invoices_salesperson_idx` (`salesperson_salesperson_id` ASC) VISIBLE,
-  INDEX `fk_invoices_cars1_idx` (`cars_car_id` ASC) VISIBLE,
-  INDEX `fk_invoices_costumer1_idx` (`costumer_costumer_id` ASC) VISIBLE,
-  CONSTRAINT `fk_invoices_salesperson`
-    FOREIGN KEY (`salesperson_salesperson_id`)
-    REFERENCES `cars`.`salesperson` (`salesperson_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoices_cars1`
-    FOREIGN KEY (`cars_car_id`)
-    REFERENCES `cars`.`cars` (`car_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_invoices_costumer1`
-    FOREIGN KEY (`costumer_costumer_id`)
-    REFERENCES `cars`.`costumer` (`costumer_id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-
-
-
+create table invoices(
+	invoice_id int auto_increment primary key,
+    invoice_number int not null,
+    `date` date not null,
+    car_id int not null,
+    client_id int not null,
+    s_staff_id int not null,
+    foreign key (car_id) references cars(car_id),
+	foreign key (client_id) references customers(client_id),
+    foreign key (s_staff_id) references salespersons(s_staff_id)
+);
