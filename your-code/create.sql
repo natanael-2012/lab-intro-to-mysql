@@ -1,5 +1,12 @@
 USE lab_mysql;
 
+
+-- DROP TABLE invoices;
+-- DROP TABLE cars;
+-- DROP TABLE customers;
+-- DROP TABLE salespersons;
+
+
 create table cars(
 	car_id int auto_increment primary key,
     vin varchar(17) not null ,
@@ -13,7 +20,7 @@ create table customers(
 	client_id int auto_increment primary key,
     c_id varchar(15) not null,
     c_name varchar(25) not null,
-    c_phone varchar(15) not null,
+    c_phone varchar(20) not null,
     c_email varchar(25) default "-",
     c_address varchar(25) ,
     c_city varchar(25),
